@@ -90,26 +90,6 @@ const deployFunction: any = async function (hre: HardhatRuntimeEnvironment) {
   dim(`network: ${chainName(chainId)} (${isTestEnvironment ? 'local' : 'remote'})`);
   dim(`deployer: ${deployer}`);
 
-  const genericRegistryAddressRinkeby = genericRegistry.address
-  
-  const genericRegistryInterface = new ethers.utils.Interface(genericRegistry.abi)
-
-  console.log("timelock is ", timelock)
-
-  const initializerArgs: string = genericRegistryInterface.encodeFunctionData(genericRegistryInterface.getFunction("initialize"),
-      [
-        "PrizePoolRegistry", // registry contract type
-        timelock // owner of contract
-      ]
-  )
-  dim(`Deploying using generic proxy factory`)
-  const prizePoolRegistryResult = await factoryDeploy({
-    implementationAddress: genericRegistryAddressRinkeby,
-    provider: ethers.provider,
-    contractName: "PrizePoolRegistry",
-    initializeData: initializerArgs,
-    signer: signer
-  }) 
 
   // now add prize pools to registry
   const prizePools = ["0x4706856FA8Bb747D50b4EF8547FE51Ab5Edc4Ac2", "0xde5275536231eCa2Dd506B9ccD73C028e16a9a32", "0xab068F220E10eEd899b54F1113dE7E354c9A8eB7"] // array of governance pools on rinkeby
