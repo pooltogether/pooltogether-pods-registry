@@ -3,9 +3,8 @@ import chalk from 'chalk';
 import { HardhatRuntimeEnvironment } from 'hardhat/types';
 import { DeployFunction, DeployResult } from 'hardhat-deploy/types';
 
-import genericRegistry from "@pooltogether/pooltogether-generic-registry/deployments/rinkeby/AddressRegistry.json"
+import genericRegistryAbi from "@pooltogether/pooltogether-generic-registry/abis/AddressRegistry.json"
 
-import { factoryDeploy } from "@pooltogether/pooltogether-proxy-factory-package"
 
 const displayLogs = !process.env.HIDE_DEPLOY_LOG;
 
@@ -74,7 +73,7 @@ const deployFunction: any = async function (hre: HardhatRuntimeEnvironment) {
   const { getNamedAccounts, deployments, getChainId, ethers } = hre;
   const { deploy } = deployments;
   
-  let { deployer, admin, timelock } = await getNamedAccounts();
+  let { deployer, admin, timelock, genericRegistry } = await getNamedAccounts();
 
   const chainId = parseInt(await getChainId());
 
@@ -84,16 +83,20 @@ const deployFunction: any = async function (hre: HardhatRuntimeEnvironment) {
   const signer = ethers.provider.getSigner(deployer);
 
   dim('\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
-  dim('PoolTogether PrizePoolRegistry - Deploy Script');
+  dim('PoolTogether Pods Registry - Deploy Script');
   dim('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n');
 
   dim(`network: ${chainName(chainId)} (${isTestEnvironment ? 'local' : 'remote'})`);
   dim(`deployer: ${deployer}`);
 
+  const genericRegistryContractFactory = await ethers.getContractFactory("AddressRegistry")
+  
+  const podsRegistryResult = await genericRegistryContractFactory.deploy("Prize Pools", deployer)
 
   // now add prize pools to registry
-  const prizePools = ["0x4706856FA8Bb747D50b4EF8547FE51Ab5Edc4Ac2", "0xde5275536231eCa2Dd506B9ccD73C028e16a9a32", "0xab068F220E10eEd899b54F1113dE7E354c9A8eB7"] // array of governance pools on rinkeby
-  // const prizePoolRegistry = 
+  const podsRegistryContract = await ethers.getContractAt("AddressRegistry", podsRegistryResult.address) 
+  // const pods : string [] [] // array of governance pools on rinkeby
+  // await podsRegistryContract.addAddresses(pods)
 
   green(`Done!`)
 
