@@ -3,9 +3,6 @@ import chalk from 'chalk';
 import { HardhatRuntimeEnvironment } from 'hardhat/types';
 import { DeployFunction, DeployResult } from 'hardhat-deploy/types';
 
-import genericRegistryAbi from "@pooltogether/pooltogether-generic-registry/abis/AddressRegistry.json"
-
-
 const displayLogs = !process.env.HIDE_DEPLOY_LOG;
 
 function dim(logMessage: string) {
@@ -73,7 +70,7 @@ const deployFunction: any = async function (hre: HardhatRuntimeEnvironment) {
   const { getNamedAccounts, deployments, getChainId, ethers } = hre;
   const { deploy } = deployments;
   
-  let { deployer, admin, timelock, genericRegistry } = await getNamedAccounts();
+  let { deployer, admin, timelock } = await getNamedAccounts();
 
   const chainId = parseInt(await getChainId());
 
