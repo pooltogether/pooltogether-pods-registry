@@ -89,13 +89,17 @@ const deployFunction: any = async function (hre: HardhatRuntimeEnvironment) {
   dim(`network: ${chainName(chainId)} (${isTestEnvironment ? 'local' : 'remote'})`);
   dim(`deployer: ${deployer}`);
 
-  const genericRegistryContractFactory = await ethers.getContractFactory("AddressRegistry")
-  
-  const podsRegistryResult = await genericRegistryContractFactory.deploy("Prize Pools", deployer)
+  const podsRegistryResult = await deploy("AddressRegistry", {
+    from: deployer,
+    skipIfAlreadyDeployed: true,
+    args: ["Prize Pools", deployer]
+  })
+
+  green(`Pods Registry deployed at ${podsRegistryResult.address}`)
 
   // now add prize pools to registry
   const podsRegistryContract = await ethers.getContractAt("AddressRegistry", podsRegistryResult.address) 
-  // const pods : string [] [] // array of governance pools on rinkeby
+  // const pods : string [] [] // array of governance pools on rinkeby -- these are not yet deployed
   // await podsRegistryContract.addAddresses(pods)
 
   green(`Done!`)
