@@ -84,7 +84,8 @@ const deployFunction: any = async function (hre: HardhatRuntimeEnvironment) {
   dim(`network: ${chainName(chainId)} (${isTestEnvironment ? 'local' : 'remote'})`);
   dim(`deployer: ${deployer}`);
 
-  const podsRegistryResult = await deploy("AddressRegistry", {
+  const podsRegistryResult = await deploy("PodsRegistry", {
+    contract: "AddressRegistry",
     from: deployer,
     skipIfAlreadyDeployed: true,
     args: ["Pods", deployer]
