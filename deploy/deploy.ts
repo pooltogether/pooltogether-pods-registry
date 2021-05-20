@@ -70,14 +70,12 @@ const deployFunction: any = async function (hre: HardhatRuntimeEnvironment) {
   const { getNamedAccounts, deployments, getChainId, ethers } = hre;
   const { deploy } = deployments;
   
-  let { deployer, admin, timelock } = await getNamedAccounts();
+  let { deployer, owner } = await getNamedAccounts();
 
   const chainId = parseInt(await getChainId());
 
   // 31337 is unit testing, 1337 is for coverage
   const isTestEnvironment = chainId === 31337 || chainId === 1337;
-
-  const signer = ethers.provider.getSigner(deployer);
 
   dim('\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
   dim('PoolTogether Pods Registry - Deploy Script');

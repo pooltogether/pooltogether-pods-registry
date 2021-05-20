@@ -11,8 +11,6 @@ import { HardhatUserConfig } from 'hardhat/config';
 
 import networks from './hardhat.network';
 
-const optimizerEnabled = !process.env.OPTIMIZER_DISABLED;
-
 const config: HardhatUserConfig = {
   abiExporter: {
     path: './abis',
@@ -36,13 +34,11 @@ const config: HardhatUserConfig = {
     deployer: {
       default: 0,
     },
-    timelock:{
-      default: "0x8Df0AfB54836dc8D0AE795503F837Cff197d3df1",
-      4: "0x8Df0AfB54836dc8D0AE795503F837Cff197d3df1"
-    },
-    genericRegistry: {
-      4: "0x9858aC37e385E52dA6385d828Cfe55a182D8ffA6",
-      137: "0x75d15A8Be214631b4e5F02D9C4bE3dC1be6876C9"
+    owner:{
+      // PT Operations Gnosis Safe
+      default: "0x029Aa20Dcc15c022b1b61D420aaCf7f179A9C73f",
+      // PT Rinkeby Gnosis Safe
+      4: "0x72c9aA4c753fc36cbF3d1fF6fEc0bC44ad41D7f2"
     }
   },
   networks,
