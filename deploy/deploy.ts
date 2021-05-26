@@ -88,7 +88,7 @@ const deployFunction: any = async function (hre: HardhatRuntimeEnvironment) {
     contract: "AddressRegistry",
     from: deployer,
     skipIfAlreadyDeployed: true,
-    args: ["Pods", deployer]
+    args: ["Pods", owner]
   })
 
   green(`Pods Registry deployed at ${podsRegistryResult.address}`)
